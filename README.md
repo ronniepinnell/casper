@@ -193,3 +193,5 @@ that's where they live.
 
 _Casper is the free, friendly ghost — it watches your commits while you're away._
 _Its bigger sibling runs the whole factory while you're gone._ 👻
+
+<!-- demo change for the refute-action dogfood -->
