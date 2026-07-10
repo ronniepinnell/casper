@@ -4,12 +4,12 @@
 >
 > _The friendly ghost in your git — it keeps the receipts._
 
-<p align="center"><img src="demo/casper-ghost.gif" width="130" alt="Casper, the friendly ghost"></p>
+<p align="center"><img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/casper-ghost.gif" width="130" alt="Casper, the friendly ghost"></p>
 
 <!-- BADGES: numbers gated by scripts/check-counts.py (badge URLs can't hold COUNT markers — HTML comments break the link) -->
 [![CI](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml/badge.svg)](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml) [![hook tests](https://img.shields.io/badge/hook__tests-24%2F24-brightgreen)](#the-judgment-toolkit) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![judgment skills](https://img.shields.io/badge/judgment__skills-13-blueviolet)](#the-judgment-toolkit) [![collection](https://img.shields.io/badge/collection-54__units_=_41__skills_+_13__agents-9cf)](#the-full-collection) [![release](https://img.shields.io/badge/release-v0.1.0-lightgrey)](#)
 
-![Casper in action: an AI's "done" gets blocked, the verdict lands in the ledger, and calibration scores how often your agent's "done" actually held up — 1 in 4 here.](demo/casper-showcase.gif)
+![Casper in action: an AI's "done" gets blocked, the verdict lands in the ledger, and calibration scores how often your agent's "done" actually held up — 1 in 4 here.](https://github.com/ronniepinnell/casper/releases/download/v0.1.0/casper-showcase.gif)
 
 A commit says `fix: done, all tests pass` — but zero tests ran. That's your AI
 **ghosting** you: it claims it's finished and vanishes, leaving you the broken
@@ -96,29 +96,48 @@ Every GIF below is real output — the hooks are the actual scripts run against 
 
 **In your editor** — `/refute` breaks a claim inside Claude Code and logs the verdict. This is **real `claude -p` output**: it actually ran `login('admin','wrong-password')`, got `True`, and diagnosed a full auth bypass:
 
-![/refute in Claude Code: it executes the breaking input, finds any password authenticates, and rules REFUTED with evidence](demo/real-refute.gif)
+![/refute in Claude Code: it executes the breaking input, finds any password authenticates, and rules REFUTED with evidence](https://github.com/ronniepinnell/casper/releases/download/v0.1.0/real-refute.gif)
 
 <details><summary>The styled walkthrough of the same flow</summary>
 
-![/refute walkthrough](demo/casper-claudecode.gif)
+![/refute walkthrough](https://github.com/ronniepinnell/casper/releases/download/v0.1.0/casper-claudecode.gif)
 </details>
 
-**The zero-LLM hooks** (git/CI, no model, no network):
+### The zero-LLM hooks
 
-| Hook | What it catches |
-|---|---|
-| ![claim-evidence](demo/hook-claim-evidence.gif) | **claim-evidence** — a "done" commit with no evidence is blocked, then passes once you attach proof. |
-| ![spec-citation](demo/hook-spec-citation.gif) | **spec-citation** — editing a protected migration halts until you cite the governing spec. |
-| ![scope-creep](demo/hook-scope-creep.gif) | **scope-creep** — a "one-line fix" quietly touching too many files trips the tripwire. |
+_git/CI, no model, no network._
 
-**The skills** (procedure any model runs):
+**`claim-evidence`** — a "done" commit with no evidence is blocked, then passes once you attach proof.
 
-| Skill | |
-|---|---|
-| ![/refute](demo/skill-refute.gif) | **/refute** — try to break the claim before believing it. |
-| ![/gate](demo/skill-gate.gif) | **/gate** — no plan without a numeric abort condition; watch it trip. |
-| ![/verdict](demo/skill-verdict.gif) | **/verdict** — every ruling is one grep-able line; "show every gate we overrode" is a query. |
-| ![/calibrate](demo/skill-calibrate.gif) | **/calibrate** — score how your confidence aged: *3 of 4 "done"s broke.* |
+<img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/hook-claim-evidence.gif" width="820" alt="claim-evidence">
+
+**`spec-citation`** — editing a protected migration halts until you cite the governing spec.
+
+<img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/hook-spec-citation.gif" width="820" alt="spec-citation">
+
+**`scope-creep`** — a "one-line fix" quietly touching too many files trips the tripwire.
+
+<img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/hook-scope-creep.gif" width="820" alt="scope-creep">
+
+### The skills
+
+_procedure any model runs._
+
+**`/refute`** — try to break the claim before believing it.
+
+<img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/skill-refute.gif" width="820" alt="/refute">
+
+**`/gate`** — no plan without a numeric abort condition; watch it trip.
+
+<img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/skill-gate.gif" width="820" alt="/gate">
+
+**`/verdict`** — every ruling is one grep-able line; "show every gate we overrode" is a query.
+
+<img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/skill-verdict.gif" width="820" alt="/verdict">
+
+**`/calibrate`** — score how your confidence aged: _3 of 4 "done"s broke._
+
+<img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/skill-calibrate.gif" width="820" alt="/calibrate">
 
 ## The judgment toolkit
 
