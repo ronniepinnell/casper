@@ -62,6 +62,34 @@ receipts with `./scripts/share.sh` — it reads the ledger and prints one
 copy-pasteable line (e.g. _"👻 Casper caught a fake 'done' — 3rd this week. 2
 gate overrides, 0 in 6 days."_).
 
+## Add it to your existing repo
+
+The hooks are the enforcement, and they ship **default-OFF**. Three lines turn
+them on, tuned to your stack:
+
+```bash
+cd your-project
+npx casper@latest --init     # detects your stack, writes a tuned .claude/judgment.json, wires the hooks ON
+casper doctor                # verify: judgment.json valid? hooks wired? ledger writable? which gates on?
+```
+
+That's it — from now on an evidence-free `git commit -m "fix: done"` is blocked
+**in your repo**, and every verdict lands in `.claude/verdicts.log`. `--init`
+asks at most 3 questions (confirm the protected paths for your stack, enable the
+dangerous-git guard, start the ledger); everything else is detected. Commit
+`.claude/judgment.json` so your whole team gets the same gates.
+
+Casper works on **three surfaces** — use one or all:
+
+| Surface | What it guards | How to add |
+|---|---|---|
+| **Local hooks** (this repo) | your commits + edits, before they happen | `npx casper@latest --init` |
+| **Pull requests** | every PR, where teammates can't `--no-verify` past it | add the [refute-action](https://github.com/ronniepinnell/refute-action) GitHub Action (one `uses:` block) |
+| **Model context** | let any model query your correction history mid-task | connect [casper-ledger-mcp](https://github.com/ronniepinnell/casper-ledger-mcp) (`claude mcp add`) |
+
+Nothing is invasive: `./uninstall.sh` reverts byte-for-byte, and `--dry-run`
+shows the plan first.
+
 ## See each piece work
 
 Every GIF below is real output — the hooks are the actual scripts run against a real repo; the ledger and calibration frames are real tool output.
