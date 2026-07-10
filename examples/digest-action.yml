@@ -1,0 +1,27 @@
+# Weekly judgment digest — drop into .github/workflows/digest.yml.
+# Every Monday it posts the digest to the run's job summary and refreshes the
+# shields.io ledger badge JSON on gh-pages (see export/ledger-badge/README.md
+# for the badge embed).
+name: judgment-digest
+on:
+  schedule:
+    - cron: '0 8 * * 1'   # Mondays 08:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # only needed for the gh-pages badge publish step
+    steps:
+      - uses: actions/checkout@v4
+      - name: Weekly digest -> job summary
+        run: ./scripts/digest.sh --since 7d >> "$GITHUB_STEP_SUMMARY"
+      - name: Ledger badge JSON
+        run: |
+          mkdir -p badge
+          ./scripts/digest.sh --since 7d --badge badge/ledger-badge.json > /dev/null
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./badge

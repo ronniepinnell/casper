@@ -1,0 +1,13 @@
+{
+  "name": "casper",
+  "owner": {
+    "name": "Ronnie Pinnell"
+  },
+  "plugins": [
+    {
+      "name": "casper",
+      "source": "./",
+      "description": "Your AI said done. Casper makes it prove it — 13 judgment skills + CI-tested zero-LLM hooks (claim-evidence, spec-citation, scope-creep) with an append-only verdict ledger and a calibration loop."
+    }
+  ]
+}

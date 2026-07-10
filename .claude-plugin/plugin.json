@@ -1,0 +1,12 @@
+{
+  "name": "casper",
+  "version": "0.1.0",
+  "description": "Your AI said done. Casper makes it prove it — 13 judgment skills + CI-tested zero-LLM hooks that block unproven done-claims and keep an append-only verdict ledger.",
+  "author": {
+    "name": "Ronnie Pinnell"
+  },
+  "homepage": "https://github.com/ronniepinnell/casper",
+  "repository": "https://github.com/ronniepinnell/casper",
+  "license": "MIT",
+  "keywords": ["judgment", "verification", "hooks", "skills", "verdict-ledger", "claim-evidence"]
+}

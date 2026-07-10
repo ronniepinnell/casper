@@ -1,0 +1,64 @@
+{
+  "_comment": "Copy to <project>/.claude/judgment.json and set enabled per gate. All gates are off by default; the hooks are inert without this file.",
+  "claim_evidence": {
+    "enabled": true,
+    "claim_words": [
+      "fixed",
+      "fixes",
+      "fix",
+      "done",
+      "works",
+      "working",
+      "complete",
+      "completed",
+      "resolved",
+      "resolves"
+    ],
+    "test_pattern": "(^|/)(tests?|__tests__|spec)/|\\.(test|spec)\\.|_test\\.",
+    "voice": "casper"
+  },
+  "spec_citation": {
+    "enabled": true,
+    "protected_globs": [
+      "supabase/migrations/*",
+      "*/migrations/*",
+      "schema/*",
+      "*openapi*",
+      "*.proto"
+    ],
+    "specs_hint": "docs/specs/",
+    "ttl_seconds": 14400
+  },
+  "scope_creep": {
+    "enabled": true,
+    "max_files": 15,
+    "reset_seconds": 28800
+  },
+  "telemetry": {
+    "enabled": false,
+    "log_file": ".claude/.judgment-state/skill-usage.jsonl"
+  },
+  "guards": {
+    "dangerous_git": {
+      "enabled": false,
+      "protected_branches": [
+        "main",
+        "master",
+        "develop"
+      ],
+      "extra_patterns": []
+    },
+    "context_watchdog": {
+      "enabled": false,
+      "warn_pcts": [
+        50,
+        70,
+        85
+      ]
+    },
+    "budget": {
+      "enabled": false,
+      "log_dir": ".claude/.judgment-state/cost-log"
+    }
+  }
+}
