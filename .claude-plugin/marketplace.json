@@ -1,7 +1,13 @@
 {
+  "_comment": "Claude Code plugin marketplace manifest. Verified against the current plugin schema shape: top-level {name, owner:{name}, plugins:[{name, source, description}]}. SCHEMA UNCERTAINTY: the `renames` map below is a forward-compat/day-one convention — as of this writing the marketplace loader may ignore unknown top-level keys rather than act on them. It is declared now so that WHEN rename/migration support lands (or a wrapper reads it), existing installs of an old plugin/slug auto-migrate to the current name instead of orphaning. Keys are prior names; values are the current plugin name. Covers the anticipated free->paid rename (casper-free -> casper) and any slug change. Extra keys here are inert if unsupported; they never break parsing.",
   "name": "casper",
   "owner": {
     "name": "Ronnie Pinnell"
+  },
+  "renames": {
+    "casper-free": "casper",
+    "casper-judgment": "casper",
+    "ghost": "casper"
   },
   "plugins": [
     {

@@ -21,6 +21,14 @@ jobs:
       - name: A drifting README count fails the PR
         run: python3 scripts/check-counts.py --check
 
+  evals:
+    name: Skill evals (verdict-line output contracts)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Skills must prove their documented verdict-line contract
+        run: python3 evals/run-evals.py
+
   skills-lint:
     name: Skills lint (self-containedness + frontmatter)
     runs-on: ubuntu-latest

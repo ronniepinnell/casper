@@ -1,4 +1,5 @@
 {
+  "_comment": "Claude Code plugin manifest. Verified against the current schema shape: {name, version, description, author}. A `hooks` reference is DELIBERATELY omitted: Casper's hooks ship in hooks/ but are default-OFF and config-gated on a per-project .claude/judgment.json (see install.sh --hooks). Auto-wiring them via a plugin.json `hooks` key would silently enable blocking gates on install, which contradicts the non-invasive design — so hooks are opted into explicitly, not declared here. SCHEMA UNCERTAINTY: if a future schema requires a `hooks` path to surface hooks in the plugin UI, add one that points at an OFF-by-default config; do not enable gates on install.",
   "name": "casper",
   "version": "0.1.0",
   "description": "Your AI said done. Casper makes it prove it — 13 judgment skills + CI-tested zero-LLM hooks that block unproven done-claims and keep an append-only verdict ledger.",

@@ -4,10 +4,12 @@
 >
 > _The friendly ghost in your git — it keeps the receipts._
 
-<!-- BADGES: numbers gated by scripts/check-counts.py (badge URLs can't hold COUNT markers — HTML comments break the link) -->
-[![CI](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml/badge.svg)](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml) [![hook tests](https://img.shields.io/badge/hook__tests-24%2F24-brightgreen)](#the-judgment-toolkit) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![judgment skills](https://img.shields.io/badge/judgment__skills-13-blueviolet)](#the-judgment-toolkit) [![collection](https://img.shields.io/badge/collection-51__units_=_41__skills_+_10__agents-9cf)](#the-full-collection) [![release](https://img.shields.io/badge/release-v0.1.0-lightgrey)](#)
+<p align="center"><img src="demo/casper-ghost.gif" width="130" alt="Casper, the friendly ghost"></p>
 
-![Casper on a real repo: the real claim-evidence hook blocks a "done" commit (exit 2, nothing committed), then allows it once an Evidence: line is added (exit 0)](demo/casper-realuse.gif)
+<!-- BADGES: numbers gated by scripts/check-counts.py (badge URLs can't hold COUNT markers — HTML comments break the link) -->
+[![CI](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml/badge.svg)](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml) [![hook tests](https://img.shields.io/badge/hook__tests-24%2F24-brightgreen)](#the-judgment-toolkit) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![judgment skills](https://img.shields.io/badge/judgment__skills-13-blueviolet)](#the-judgment-toolkit) [![collection](https://img.shields.io/badge/collection-54__units_=_41__skills_+_13__agents-9cf)](#the-full-collection) [![release](https://img.shields.io/badge/release-v0.1.0-lightgrey)](#)
+
+![Casper in action: an AI's "done" gets blocked, the verdict lands in the ledger, and calibration scores how often your agent's "done" actually held up — 1 in 4 here.](demo/casper-showcase.gif)
 
 A commit says `fix: done, all tests pass` — but zero tests ran. That's your AI
 **ghosting** you: it claims it's finished and vanishes, leaving you the broken
@@ -29,6 +31,14 @@ tooling skills we actually run in production.
 ## 30-second quickstart
 
 ```bash
+npx casper@latest              # interactive installer — mirrors install.sh, no clone needed
+```
+
+That one line is the fast path. Prefer a plugin? `/plugin marketplace add
+ronniepinnell/casper` then `/plugin install casper`. Or clone and run the script
+directly (install.sh is the floor everything else wraps):
+
+```bash
 git clone https://github.com/ronniepinnell/casper && cd casper
 
 ./install.sh --only refute              # one skill, into ./.claude/skills of this project
@@ -36,13 +46,46 @@ git clone https://github.com/ronniepinnell/casper && cd casper
 ./install.sh --all                      # toolkit + the entire collection (skills + agents)
 ```
 
-Then, inside Claude Code: `/refute the login fix works`.
+`npx casper@latest --all` / `--only <name>` / `--category <name>` / `--hooks` /
+`uninstall` all forward straight to install.sh. Then, inside Claude Code:
+`/refute the login fix works`.
 
 Non-invasive by design: `install.sh` copies only what you ask into
 `.claude/` (`--global` for `~/.claude`), writes a manifest, and `./uninstall.sh`
 reverts byte-for-byte exactly what was installed. `--dry-run` shows the plan
 without touching anything. Hooks are separate and **default-OFF**
 (`./install.sh --hooks`).
+
+Check an install with `./scripts/doctor.sh` (a ✓/✗ diagnostic: judgment.json
+valid? hooks wired? ledger writable? which gates are on?). Brag about your
+receipts with `./scripts/share.sh` — it reads the ledger and prints one
+copy-pasteable line (e.g. _"👻 Casper caught a fake 'done' — 3rd this week. 2
+gate overrides, 0 in 6 days."_).
+
+## See each piece work
+
+Every GIF below is real output — the hooks are the actual scripts run against a real repo; the ledger and calibration frames are real tool output.
+
+**In your editor** — `/refute` breaks a claim inside Claude Code and logs the verdict:
+
+![/refute running in Claude Code: it finds the test never calls the function, rules REFUTED, and logs it](demo/casper-claudecode.gif)
+
+**The zero-LLM hooks** (git/CI, no model, no network):
+
+| Hook | What it catches |
+|---|---|
+| ![claim-evidence](demo/hook-claim-evidence.gif) | **claim-evidence** — a "done" commit with no evidence is blocked, then passes once you attach proof. |
+| ![spec-citation](demo/hook-spec-citation.gif) | **spec-citation** — editing a protected migration halts until you cite the governing spec. |
+| ![scope-creep](demo/hook-scope-creep.gif) | **scope-creep** — a "one-line fix" quietly touching too many files trips the tripwire. |
+
+**The skills** (procedure any model runs):
+
+| Skill | |
+|---|---|
+| ![/refute](demo/skill-refute.gif) | **/refute** — try to break the claim before believing it. |
+| ![/gate](demo/skill-gate.gif) | **/gate** — no plan without a numeric abort condition; watch it trip. |
+| ![/verdict](demo/skill-verdict.gif) | **/verdict** — every ruling is one grep-able line; "show every gate we overrode" is a query. |
+| ![/calibrate](demo/skill-calibrate.gif) | **/calibrate** — score how your confidence aged: *3 of 4 "done"s broke.* |
 
 ## The judgment toolkit
 
@@ -80,14 +123,14 @@ digest — lives in **[MANUAL.md](MANUAL.md)**.
 
 ## The full collection
 
-<!-- COUNT: collection-units -->51<!-- /COUNT --> authored units — <!-- COUNT: collection-skills -->41<!-- /COUNT --> skills + <!-- COUNT: collection-agents -->10<!-- /COUNT --> agents
+<!-- COUNT: collection-units -->54<!-- /COUNT --> authored units — <!-- COUNT: collection-skills -->41<!-- /COUNT --> skills + <!-- COUNT: collection-agents -->13<!-- /COUNT --> agents
 (`origin: authored`, CI-checked provenance), organized into six categories. Each category page has a table — unit, what it does, when to
 call, and a one-line install. Install one skill, a whole category, or everything.
 
 | Category | What's inside | Units |
 |---|---|---|
 | [Planning & Lifecycle](collection/planning-and-lifecycle/README.md) | Initiative → milestone → epic → task cadence + orchestration | 11 |
-| [Verification & Audit](collection/verification-and-audit/README.md) | Completion reality-checks, spec/rules conformance, bug hunts, over-engineering review | 15 |
+| [Verification & Audit](collection/verification-and-audit/README.md) | Completion reality-checks, spec/rules conformance, bug hunts, over-engineering review | 18 |
 | [Docs & Context](collection/docs-and-context/README.md) | Keep docs, AI-context files, and project records in sync | 4 |
 | [Research & Analysis](collection/research-and-analysis/README.md) | Generate and pressure-test ideas, names, designs, decisions | 6 |
 | [Meta & Tooling](collection/meta-and-tooling/README.md) | Scaffolding, session control, import/sync, dev-tool integrations | 13 |

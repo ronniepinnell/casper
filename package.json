@@ -1,0 +1,30 @@
+{
+  "name": "casper",
+  "version": "0.1.0",
+  "description": "Your AI said done. Casper makes it prove it — 13 judgment skills + CI-tested zero-LLM hooks that block unproven done-claims and keep an append-only verdict ledger. npx wrapper around install.sh.",
+  "bin": {
+    "casper": "bin/casper.js"
+  },
+  "files": [
+    "bin/",
+    "install.sh",
+    "uninstall.sh",
+    "skills/",
+    "collection/",
+    "hooks/",
+    "scripts/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": ["claude-code", "judgment", "verification", "hooks", "skills", "verdict-ledger", "claim-evidence"],
+  "homepage": "https://github.com/ronniepinnell/casper",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ronniepinnell/casper.git"
+  },
+  "license": "MIT",
+  "author": "Ronnie Pinnell"
+}
