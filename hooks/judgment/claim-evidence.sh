@@ -60,9 +60,25 @@ except Exception:
 
 # Optional voice: cosmetic banner prepended to the block message. Default plain.
 # A project sets claim_evidence.voice to give the gate a personality; the
-# check itself is identical regardless of voice.
-_banners = {"casper": "\U0001F47B Boo — that ain't done yet.\n"}
-banner = _banners.get(gate.get("voice", "plain"), "")
+# check itself is identical regardless of voice. The 'casper' voice rotates
+# through quirky one-liners (all start with 👻 so tooling can detect them).
+import random
+_casper_lines = [
+    "\U0001F47B Boo! Caught one. That 'done' brought no receipts.",
+    "\U0001F47B A wild 'done' appeared — with zero evidence. Not today.",
+    "\U0001F47B I pass through walls, not through unproven commits.",
+    "\U0001F47B 'All tests pass'? Name one. I'll wait…",
+    "\U0001F47B Spooky: this commit claims victory and packed no proof.",
+    "\U0001F47B That 'fixed' is doing a lot of heavy lifting with no evidence.",
+    "\U0001F47B Boo — that ain't done yet. (I'd know. I've seen the code.)",
+]
+voice = gate.get("voice", "plain")
+if voice == "casper":
+    # Seed by the message so the same commit gets the same quip (stable), but
+    # different commits get variety.
+    banner = random.Random(message).choice(_casper_lines) + "\n"
+else:
+    banner = ""
 
 print(banner +
       "claim-evidence gate: this commit message claims completion "
