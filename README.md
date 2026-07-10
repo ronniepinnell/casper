@@ -6,8 +6,7 @@
 
 [![CI](https://img.shields.io/badge/CI-passing-brightgreen)](#) [![hook tests](https://img.shields.io/badge/hook_tests-24%2F24-brightgreen)](#) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![judgment skills](https://img.shields.io/badge/judgment_skills-13-blueviolet)](#the-judgment-toolkit) [![collection](https://img.shields.io/badge/collection-51_units-9cf)](#the-full-collection) [![release](https://img.shields.io/badge/release-v0.1.0-lightgrey)](#)
 
-<!-- DEMO GIF SLOT: record with demo/demo.tape, save the gif under demo/, embed it here -->
-_A 20-second demo of a fake "done" commit getting blocked goes here._
+![Casper blocks an evidence-free commit, then accepts it once proof is attached](demo/casper-demo.gif)
 
 A commit says `fix: done, all tests pass` — but zero tests ran. That's your AI
 **ghosting** you: it claims it's finished and vanishes, leaving you the broken
