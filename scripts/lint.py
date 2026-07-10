@@ -21,9 +21,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SKILLS = os.path.join(ROOT, "skills")
 COLLECTION = os.path.join(ROOT, "collection")
 
+# Generic hygiene: skills must not carry machine-specific or private paths.
+# (Provenance and project-coupling are gated upstream before publish; this
+# public lint only enforces portability.)
 BANNED = [
-    r"benchsight", r"upice", r"BEN-\d", r"Operator-history", r"fable-queue",
-    r"claude-config", r"/Users/[a-zA-Z]", r"~/Documents", r"Programming_HD",
+    r"/Users/[a-zA-Z]", r"/home/[a-zA-Z]", r"~/Documents", r"C:\\Users",
 ]
 GUARDS = ["if present", "if your workflow", "where present", "if it exists",
           "if one is available", "if your harness"]
