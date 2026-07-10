@@ -1,0 +1,37 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  hooks:
+    name: Hook regression matrix
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run hook test matrix
+        run: bash hooks/judgment/test.sh
+
+  skills-lint:
+    name: Skills lint (self-containedness + frontmatter)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint skills
+        run: python3 scripts/lint.py
+
+  installer:
+    name: Install/uninstall round-trip
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Round-trip must leave target byte-identical
+        run: |
+          set -euo pipefail
+          T="$(mktemp -d)"; mkdir -p "$T/project"
+          cp -R "$T/project" "$T/before"
+          (cd "$T/project" && "$GITHUB_WORKSPACE/install.sh" --only refute,gate --hooks)
+          test -f "$T/project/.claude/skills/refute/SKILL.md"
+          (cd "$T/project" && "$GITHUB_WORKSPACE/uninstall.sh")
+          diff -r "$T/before" "$T/project"
