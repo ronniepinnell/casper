@@ -94,9 +94,14 @@ shows the plan first.
 
 Every GIF below is real output — the hooks are the actual scripts run against a real repo; the ledger and calibration frames are real tool output.
 
-**In your editor** — `/refute` breaks a claim inside Claude Code and logs the verdict:
+**In your editor** — `/refute` breaks a claim inside Claude Code and logs the verdict. This is **real `claude -p` output**: it actually ran `login('admin','wrong-password')`, got `True`, and diagnosed a full auth bypass:
 
-![/refute running in Claude Code: it finds the test never calls the function, rules REFUTED, and logs it](demo/casper-claudecode.gif)
+![/refute in Claude Code: it executes the breaking input, finds any password authenticates, and rules REFUTED with evidence](demo/real-refute.gif)
+
+<details><summary>The styled walkthrough of the same flow</summary>
+
+![/refute walkthrough](demo/casper-claudecode.gif)
+</details>
 
 **The zero-LLM hooks** (git/CI, no model, no network):
 
