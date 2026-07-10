@@ -4,9 +4,10 @@
 >
 > _The friendly ghost in your git — it keeps the receipts._
 
-[![CI](https://img.shields.io/badge/CI-passing-brightgreen)](#) [![hook tests](https://img.shields.io/badge/hook_tests-24%2F24-brightgreen)](#) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![judgment skills](https://img.shields.io/badge/judgment_skills-13-blueviolet)](#the-judgment-toolkit) [![collection](https://img.shields.io/badge/collection-51_units-9cf)](#the-full-collection) [![release](https://img.shields.io/badge/release-v0.1.0-lightgrey)](#)
+<!-- BADGES: numbers gated by scripts/check-counts.py (badge URLs can't hold COUNT markers — HTML comments break the link) -->
+[![CI](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml/badge.svg)](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml) [![hook tests](https://img.shields.io/badge/hook__tests-24%2F24-brightgreen)](#the-judgment-toolkit) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![judgment skills](https://img.shields.io/badge/judgment__skills-13-blueviolet)](#the-judgment-toolkit) [![collection](https://img.shields.io/badge/collection-51__units_=_41__skills_+_10__agents-9cf)](#the-full-collection) [![release](https://img.shields.io/badge/release-v0.1.0-lightgrey)](#)
 
-![Casper blocks an evidence-free commit, then accepts it once proof is attached](demo/casper-demo.gif)
+![Casper on a real repo: the real claim-evidence hook blocks a "done" commit (exit 2, nothing committed), then allows it once an Evidence: line is added (exit 0)](demo/casper-realuse.gif)
 
 A commit says `fix: done, all tests pass` — but zero tests ran. That's your AI
 **ghosting** you: it claims it's finished and vanishes, leaving you the broken
@@ -20,7 +21,7 @@ it blocks the commit and says:
 
 **Casper** is a curated set of Claude Code skills + agents built around one
 thesis: **correction history is the asset, not the model.** Its headline act is the **judgment
-toolkit** — 13 skills + 7 CI-tested, zero-LLM hooks that block unproven "done"
+toolkit** — <!-- COUNT: judgment-skills -->13<!-- /COUNT --> skills + <!-- COUNT: hooks -->7<!-- /COUNT --> CI-tested, zero-LLM hooks that block unproven "done"
 claims, keep an append-only verdict ledger, and score how your confidence aged.
 Around it sits a browsable **collection** of the planning, verification, and
 tooling skills we actually run in production.
@@ -45,7 +46,7 @@ without touching anything. Hooks are separate and **default-OFF**
 
 ## The judgment toolkit
 
-The flagship. 13 skills that turn "trust me, it's done" into a checkable record.
+The flagship. <!-- COUNT: judgment-skills -->13<!-- /COUNT --> skills that turn "trust me, it's done" into a checkable record.
 
 | Command | One-liner |
 |---|---|
@@ -65,9 +66,9 @@ The flagship. 13 skills that turn "trust me, it's done" into a checkable record.
 
 **Start here — 5 tools:** `/refute`, `/gate`, `/verdict`, `/door`, `/calibrate`.
 
-Backed by 7 zero-LLM hooks (claim-evidence, spec-citation, scope-creep,
+Backed by <!-- COUNT: hooks -->7<!-- /COUNT --> zero-LLM hooks (claim-evidence, spec-citation, scope-creep,
 dangerous-git, and three telemetry/guard hooks), each with a block-case AND
-pass-case regression test — 24 assertions, run in CI (`hooks/judgment/test.sh`).
+pass-case regression test — <!-- COUNT: hook-tests -->24<!-- /COUNT --> assertions, run in CI (`hooks/judgment/test.sh`).
 Every skill appends a one-line, grep-able verdict to `.claude/verdicts.log`:
 
 ```bash
@@ -79,8 +80,8 @@ digest — lives in **[MANUAL.md](MANUAL.md)**.
 
 ## The full collection
 
-51 authored units (`origin: authored`, CI-checked provenance), organized into
-six categories. Each category page has a table — unit, what it does, when to
+<!-- COUNT: collection-units -->51<!-- /COUNT --> authored units — <!-- COUNT: collection-skills -->41<!-- /COUNT --> skills + <!-- COUNT: collection-agents -->10<!-- /COUNT --> agents
+(`origin: authored`, CI-checked provenance), organized into six categories. Each category page has a table — unit, what it does, when to
 call, and a one-line install. Install one skill, a whole category, or everything.
 
 | Category | What's inside | Units |
@@ -102,6 +103,7 @@ call, and a one-line install. Install one skill, a whole category, or everything
 - **[MANUAL.md](MANUAL.md)** — the one deep doc: thesis, operating loop,
   authoring guide, skill-vs-hook decision tree, troubleshooting.
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** — how to add a unit; the collection flow.
+- **[CHANGELOG.md](CHANGELOG.md)** — release history (Keep a Changelog format).
 - **[ROADMAP.md](ROADMAP.md)** · **[LAUNCH.md](LAUNCH.md)**
 
 ## License

@@ -13,6 +13,14 @@ jobs:
       - name: Run hook test matrix
         run: bash hooks/judgment/test.sh
 
+  counts:
+    name: README counts match the tree
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: A drifting README count fails the PR
+        run: python3 scripts/check-counts.py --check
+
   skills-lint:
     name: Skills lint (self-containedness + frontmatter)
     runs-on: ubuntu-latest
