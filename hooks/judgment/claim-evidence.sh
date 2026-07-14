@@ -33,7 +33,17 @@ if not re.search(r"\bgit\b.*\bcommit\b", cmd):
 # Extract the commit message from -m arguments (rough but effective).
 msgs = re.findall(r"-m\s+(?:\"([^\"]*)\"|'([^']*)')", cmd, re.S)
 message = " ".join(a or b for a, b in msgs)
-if not message:
+# -m "$(cat <<'EOF' … EOF)" style: the quoted-arg regex stops at the FIRST
+# embedded double-quote inside the heredoc, which can hide an Evidence: line
+# (false block) or a claim word (false pass). Take the first heredoc body
+# after the `git commit` token as the real message. Only that one — a later
+# heredoc (e.g. a chained `gh pr create` body) must not stand in as evidence.
+mcommit = re.search(r"\bgit\b[^&;|]*\bcommit\b", cmd)
+if mcommit:
+    h = re.search(r"<<-?\s*'?(\w+)'?\s*\n(.*?)\n\1\b", cmd[mcommit.start():], re.S)
+    if h:
+        message += " " + h.group(2)
+if not message.strip():
     sys.exit(0)  # editor-based commit; nothing to scan
 
 claim_words = gate.get("claim_words",

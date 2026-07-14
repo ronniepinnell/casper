@@ -1,104 +1,216 @@
 {
-  "_about": "Shape/contract evals for the judgment skills. Zero deps, no network, no LLM. Each case asserts a skill DOCUMENTS its verdict line and that a canonical example parses. See README.md.",
-  "cases": [
-    {
-      "skill": "refute",
-      "situation": "A completion claim ('the login fix works') is made before commit.",
-      "ledger_type": "REFUTE",
-      "ledger_known": true,
-      "allowed_tokens": ["CONFIRMED", "REFUTED", "UNVERIFIED"],
-      "doc_markers": ["CONFIRMED", "REFUTED", "UNVERIFIED"],
-      "canonical_ledger_line": "2026-07-11 | REFUTE | REFUTED \"search works\" | broke on: unicode names | commit: 5e6f7a8 | by: claude",
-      "canonical_verdict_line": "REFUTED \"search works\" | broke on: unicode names",
-      "verdict_regex": "^(CONFIRMED|REFUTED|UNVERIFIED)\\b"
-    },
-    {
-      "skill": "gate",
-      "situation": "A pgvector migration plan needs a pre-agreed abort condition.",
-      "ledger_type": "GATE",
-      "ledger_known": true,
-      "allowed_tokens": ["PASS", "TRIPPED", "OVERRIDE"],
-      "doc_markers": ["GATE:", "on-fail:", "TRIPPED"],
-      "canonical_ledger_line": "2026-07-09 | GATE | TRIPPED p95=340ms>200ms | on-fail: STOP executed | commit: 1a2b3c4 | by: claude",
-      "canonical_verdict_line": "GATE: join p95 | > 200ms | pgbench after first batch | on-fail: STOP + report",
-      "verdict_regex": "^GATE:\\s*.+\\|.+\\|.+\\|\\s*on-fail:\\s*.+$"
-    },
-    {
-      "skill": "door",
-      "situation": "UUID vs bigint primary keys — a possibly irreversible schema choice.",
-      "ledger_type": "DOOR",
-      "ledger_known": true,
-      "allowed_tokens": ["one-way", "two-way"],
-      "doc_markers": ["DOOR:", "one-way", "two-way"],
-      "canonical_ledger_line": "2026-07-09 | DOOR | one-way | locked: uuid pks | escape: full remap | commit: none | by: operator",
-      "canonical_verdict_line": "DOOR: one-way | locked: uuid pks | escape: full remap | gate: join p95",
-      "verdict_regex": "^DOOR:\\s*(one-way|two-way)\\b"
-    },
-    {
-      "skill": "drift",
-      "situation": "A catalog doc claims skills that no longer exist in the tree.",
-      "ledger_type": "DRIFT",
-      "ledger_known": true,
-      "allowed_tokens": ["DRIFT"],
-      "doc_markers": ["DRIFT:", "liar:", "fix:"],
-      "canonical_ledger_line": "2026-07-12 | DRIFT | catalog vs skills/ | liar: spec (stale) | fix: doc + CI gate | commit: none | by: claude",
-      "canonical_verdict_line": "DRIFT: catalog vs skills/ | liar: spec (stale) | fix: doc + CI gate",
-      "verdict_regex": "^DRIFT:\\s*.+\\|\\s*liar:\\s*.+\\|\\s*fix:\\s*.+$"
-    },
-    {
-      "skill": "premortem",
-      "situation": "Before a risky migration, imagine it already failed and enumerate deaths.",
-      "ledger_type": "PREMORTEM",
-      "ledger_known": true,
-      "allowed_tokens": ["accepted"],
-      "doc_markers": ["PREMORTEM:", "deaths:", "accepted:"],
-      "canonical_ledger_line": "2026-07-12 | PREMORTEM | risk accepted: no rollback plan | deaths: 4 | commit: none | by: operator",
-      "canonical_verdict_line": "PREMORTEM: pgvector migration | deaths: 4 | hardened: 3 | accepted: 1, by operator",
-      "verdict_regex": "^PREMORTEM:\\s*.+$"
-    },
-    {
-      "skill": "altitude",
-      "situation": "A symptom shows at the UI layer but the cause is a missing FK.",
-      "ledger_type": "ALTITUDE",
-      "ledger_known": true,
-      "allowed_tokens": ["symptom", "cause"],
-      "doc_markers": ["ALTITUDE:", "symptom", "cause"],
-      "canonical_ledger_line": "2026-07-12 | ALTITUDE | symptom at L5, cause at L2 (missing FK) | fixing at L2, plus L5 guard | commit: none | by: claude",
-      "canonical_verdict_line": "ALTITUDE: symptom at L5, cause at L2 (missing FK) — fixing at L2, plus L5 guard",
-      "verdict_regex": "^ALTITUDE:\\s*symptom\\b.*\\bcause\\b"
-    },
-    {
-      "skill": "escalate",
-      "situation": "A one-way door with no precedent and a failed disagreement check.",
-      "ledger_type": "ESCALATE",
-      "ledger_known": false,
-      "allowed_tokens": ["queued", "adjudicated"],
-      "doc_markers": ["ESCALATE:", "queued"],
-      "canonical_ledger_line": "2026-07-12 | ESCALATE | ESC-012 queued | trigger: one-way door, no precedent | commit: none | by: operator",
-      "canonical_verdict_line": "ESCALATE: ESC-012 | one-way door, no precedent | queued",
-      "verdict_regex": "^ESCALATE:\\s*ESC-\\d+\\s*\\|.+\\|\\s*(queued|adjudicated)\\b"
-    },
-    {
-      "skill": "precedent",
-      "situation": "A new decision resembles a banked prior ruling.",
-      "ledger_type": "PRECEDENT",
-      "ledger_known": false,
-      "allowed_tokens": ["followed", "distinguished", "none-found"],
-      "doc_markers": ["PRECEDENT:", "followed", "distinguished", "none-found"],
-      "canonical_ledger_line": "2026-07-12 | PRECEDENT | followed DOOR-2026-07-09 | same lock-in class | commit: none | by: claude",
-      "canonical_verdict_line": "PRECEDENT: distinguished DOOR-2026-07-09 — different lock-in class",
-      "verdict_regex": "^PRECEDENT:\\s*(followed|distinguished|none-found)\\b"
-    },
-    {
-      "skill": "verdict",
-      "situation": "A judgment skill produced a verdict and it must be logged to the ledger.",
-      "ledger_type": null,
-      "ledger_known": true,
-      "allowed_tokens": ["TRIPPED", "OVERRIDE", "REFUTED", "CONFIRMED", "UNVERIFIED", "one-way", "two-way", "accepted"],
-      "doc_markers": ["by:", "DOOR", "GATE", "PREMORTEM", "REFUTE", "DRIFT"],
-      "canonical_ledger_line": "2026-07-10 | GATE | OVERRIDE 200->400ms | reason: cold cache accepted | commit: 9f8e7d6 | by: operator",
-      "canonical_verdict_line": "2026-07-10 | GATE | OVERRIDE 200->400ms | reason: cold cache accepted | by: operator",
-      "verdict_regex": "^\\d{4}-\\d{2}-\\d{2}\\s*\\|\\s*[A-Z]+\\s*\\|.+\\|\\s*by:\\s*.+$"
-    }
-  ]
+ "_about": "Shape/contract evals for the judgment skills. Zero deps, no network, no LLM. Each case asserts a skill DOCUMENTS its verdict line and that a canonical example parses. See README.md.",
+ "cases": [
+  {
+   "skill": "refute",
+   "situation": "A completion claim ('the login fix works') is made before commit.",
+   "ledger_type": "REFUTE",
+   "ledger_known": true,
+   "allowed_tokens": [
+    "CONFIRMED",
+    "REFUTED",
+    "UNVERIFIED"
+   ],
+   "doc_markers": [
+    "CONFIRMED",
+    "REFUTED",
+    "UNVERIFIED"
+   ],
+   "canonical_ledger_line": "2026-07-11 | REFUTE | REFUTED \"search works\" | broke on: unicode names | commit: 5e6f7a8 | by: claude",
+   "canonical_verdict_line": "REFUTED \"search works\" | broke on: unicode names",
+   "verdict_regex": "^(CONFIRMED|REFUTED|UNVERIFIED)\\b"
+  },
+  {
+   "skill": "gate",
+   "situation": "A pgvector migration plan needs a pre-agreed abort condition.",
+   "ledger_type": "GATE",
+   "ledger_known": true,
+   "allowed_tokens": [
+    "PASS",
+    "TRIPPED",
+    "OVERRIDE"
+   ],
+   "doc_markers": [
+    "GATE:",
+    "on-fail:",
+    "TRIPPED"
+   ],
+   "canonical_ledger_line": "2026-07-09 | GATE | TRIPPED p95=340ms>200ms | on-fail: STOP executed | commit: 1a2b3c4 | by: claude",
+   "canonical_verdict_line": "GATE: join p95 | > 200ms | pgbench after first batch | on-fail: STOP + report",
+   "verdict_regex": "^GATE:\\s*.+\\|.+\\|.+\\|\\s*on-fail:\\s*.+$"
+  },
+  {
+   "skill": "door",
+   "situation": "UUID vs bigint primary keys \u2014 a possibly irreversible schema choice.",
+   "ledger_type": "DOOR",
+   "ledger_known": true,
+   "allowed_tokens": [
+    "one-way",
+    "two-way"
+   ],
+   "doc_markers": [
+    "DOOR:",
+    "one-way",
+    "two-way"
+   ],
+   "canonical_ledger_line": "2026-07-09 | DOOR | one-way | locked: uuid pks | escape: full remap | commit: none | by: operator",
+   "canonical_verdict_line": "DOOR: one-way | locked: uuid pks | escape: full remap | gate: join p95",
+   "verdict_regex": "^DOOR:\\s*(one-way|two-way)\\b"
+  },
+  {
+   "skill": "drift",
+   "situation": "A catalog doc claims skills that no longer exist in the tree.",
+   "ledger_type": "DRIFT",
+   "ledger_known": true,
+   "allowed_tokens": [
+    "DRIFT"
+   ],
+   "doc_markers": [
+    "DRIFT:",
+    "liar:",
+    "fix:"
+   ],
+   "canonical_ledger_line": "2026-07-12 | DRIFT | catalog vs skills/ | liar: spec (stale) | fix: doc + CI gate | commit: none | by: claude",
+   "canonical_verdict_line": "DRIFT: catalog vs skills/ | liar: spec (stale) | fix: doc + CI gate",
+   "verdict_regex": "^DRIFT:\\s*.+\\|\\s*liar:\\s*.+\\|\\s*fix:\\s*.+$"
+  },
+  {
+   "skill": "premortem",
+   "situation": "Before a risky migration, imagine it already failed and enumerate deaths.",
+   "ledger_type": "PREMORTEM",
+   "ledger_known": true,
+   "allowed_tokens": [
+    "accepted"
+   ],
+   "doc_markers": [
+    "PREMORTEM:",
+    "deaths:",
+    "accepted:"
+   ],
+   "canonical_ledger_line": "2026-07-12 | PREMORTEM | risk accepted: no rollback plan | deaths: 4 | commit: none | by: operator",
+   "canonical_verdict_line": "PREMORTEM: pgvector migration | deaths: 4 | hardened: 3 | accepted: 1, by operator",
+   "verdict_regex": "^PREMORTEM:\\s*.+$"
+  },
+  {
+   "skill": "altitude",
+   "situation": "A symptom shows at the UI layer but the cause is a missing FK.",
+   "ledger_type": "ALTITUDE",
+   "ledger_known": true,
+   "allowed_tokens": [
+    "symptom",
+    "cause"
+   ],
+   "doc_markers": [
+    "ALTITUDE:",
+    "symptom",
+    "cause"
+   ],
+   "canonical_ledger_line": "2026-07-12 | ALTITUDE | symptom at L5, cause at L2 (missing FK) | fixing at L2, plus L5 guard | commit: none | by: claude",
+   "canonical_verdict_line": "ALTITUDE: symptom at L5, cause at L2 (missing FK) \u2014 fixing at L2, plus L5 guard",
+   "verdict_regex": "^ALTITUDE:\\s*symptom\\b.*\\bcause\\b"
+  },
+  {
+   "skill": "escalate",
+   "situation": "A one-way door with no precedent and a failed disagreement check.",
+   "ledger_type": "ESCALATE",
+   "ledger_known": false,
+   "allowed_tokens": [
+    "queued",
+    "adjudicated"
+   ],
+   "doc_markers": [
+    "ESCALATE:",
+    "queued"
+   ],
+   "canonical_ledger_line": "2026-07-12 | ESCALATE | ESC-012 queued | trigger: one-way door, no precedent | commit: none | by: operator",
+   "canonical_verdict_line": "ESCALATE: ESC-012 | one-way door, no precedent | queued",
+   "verdict_regex": "^ESCALATE:\\s*ESC-\\d+\\s*\\|.+\\|\\s*(queued|adjudicated)\\b"
+  },
+  {
+   "skill": "precedent",
+   "situation": "A new decision resembles a banked prior ruling.",
+   "ledger_type": "PRECEDENT",
+   "ledger_known": false,
+   "allowed_tokens": [
+    "followed",
+    "distinguished",
+    "none-found"
+   ],
+   "doc_markers": [
+    "PRECEDENT:",
+    "followed",
+    "distinguished",
+    "none-found"
+   ],
+   "canonical_ledger_line": "2026-07-12 | PRECEDENT | followed DOOR-2026-07-09 | same lock-in class | commit: none | by: claude",
+   "canonical_verdict_line": "PRECEDENT: distinguished DOOR-2026-07-09 \u2014 different lock-in class",
+   "verdict_regex": "^PRECEDENT:\\s*(followed|distinguished|none-found)\\b"
+  },
+  {
+   "skill": "verdict",
+   "situation": "A judgment skill produced a verdict and it must be logged to the ledger.",
+   "ledger_type": null,
+   "ledger_known": true,
+   "allowed_tokens": [
+    "TRIPPED",
+    "OVERRIDE",
+    "REFUTED",
+    "CONFIRMED",
+    "UNVERIFIED",
+    "one-way",
+    "two-way",
+    "accepted"
+   ],
+   "doc_markers": [
+    "by:",
+    "DOOR",
+    "GATE",
+    "PREMORTEM",
+    "REFUTE",
+    "DRIFT"
+   ],
+   "canonical_ledger_line": "2026-07-10 | GATE | OVERRIDE 200->400ms | reason: cold cache accepted | commit: 9f8e7d6 | by: operator",
+   "canonical_verdict_line": "2026-07-10 | GATE | OVERRIDE 200->400ms | reason: cold cache accepted | by: operator",
+   "verdict_regex": "^\\d{4}-\\d{2}-\\d{2}\\s*\\|\\s*[A-Z]+\\s*\\|.+\\|\\s*by:\\s*.+$"
+  },
+  {
+   "skill": "merge-train",
+   "situation": "End of week: several open PRs; merge what is mechanically proven safe.",
+   "ledger_type": "MERGE-TRAIN",
+   "ledger_known": false,
+   "allowed_tokens": [
+    "HELD",
+    "UNVERIFIED",
+    "merged"
+   ],
+   "doc_markers": [
+    "SAFE",
+    "HELD",
+    "UNVERIFIED",
+    "autonomy:green",
+    "MERGE-TRAIN:"
+   ],
+   "canonical_ledger_line": "2026-07-14 | MERGE-TRAIN | 2 merged (#41 #42) | 1 HELD (not-approved) | 0 UNVERIFIED | by: claude",
+   "canonical_verdict_line": "MERGE-TRAIN: 2 merged (#41 #42) | 1 HELD (not-approved) | 0 UNVERIFIED | target CI: green",
+   "verdict_regex": "^MERGE-TRAIN: \\d+ merged"
+  },
+  {
+   "skill": "audit-skills",
+   "situation": "The skill library grew; audit token cost/bloat/overlap with numbers, mark usage axes UNVERIFIED without telemetry.",
+   "ledger_type": "AUDIT",
+   "ledger_known": false,
+   "allowed_tokens": [
+    "UNVERIFIED",
+    "tok"
+   ],
+   "doc_markers": [
+    "UNVERIFIED",
+    "AUDIT:",
+    "token"
+   ],
+   "canonical_ledger_line": "2026-07-14 | AUDIT | skills 20 in scope | 82883->79219 tok | tightened: biggest-skill | UNVERIFIED: usage axes | by: claude",
+   "canonical_verdict_line": "AUDIT: skills | 20 in scope | 82883->79219 tok | tightened: biggest-skill | UNVERIFIED: usage axes",
+   "verdict_regex": "^AUDIT: skills"
+  }
+ ]
 }

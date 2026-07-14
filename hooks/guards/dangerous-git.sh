@@ -43,13 +43,28 @@ patterns = [
     r"^git restore \.\s*$",
     r"^git\s+.*--no-verify",
 ]
+# `git merge X` is only dangerous when it merges INTO a protected branch —
+# i.e. when the CURRENT branch is protected. Merging main into a feature
+# branch (conflict resolution before a PR merge) is routine and must pass.
+# (2026-07-14: the old unconditional `git merge .*main` pattern false-blocked
+# exactly that, forcing a declared bypass.)
+try:
+    import subprocess
+    current = subprocess.run(["git", "branch", "--show-current"],
+                             capture_output=True, text=True,
+                             timeout=5).stdout.strip()
+except Exception:
+    current = ""
+on_protected = current in protected
+
 for b in protected:
     patterns += [
         rf"^git checkout {re.escape(b)}\s*$",
         rf"^git switch {re.escape(b)}\s*$",
-        rf"^git merge\b.*\b{re.escape(b)}\b",
         rf"^git push\b.*\b{re.escape(b)}\b",
     ]
+if on_protected:
+    patterns.append(r"^git merge\b")
 patterns += gate.get("extra_patterns", [])
 
 # Check each subcommand independently; only ones that start with `git`.
