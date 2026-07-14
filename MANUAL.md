@@ -25,7 +25,7 @@ lessons go to stop evaporating.
 
 | Layer | Artifacts | Property |
 |---|---|---|
-| Procedure | /refute /door /gate /drift /altitude /premortem /think | model runs it, steps are checkable |
+| Procedure | /refute /door /gate /drift /altitude /premortem /think /merge-train /audit-skills | model runs it, steps are checkable |
 | Record | /verdict (ledger), /calibrate (scoring) | memory that survives sessions and models |
 | Routing | /escalate (queue hard calls to `.claude/escalation-queue.md`, burn in batch), /precedent (follow or distinguish prior rulings) | judgment spent where it's strongest, never re-derived |
 | Scale | /sweep (audit fan-out) | one agent can't hold a system; a fan-out can |

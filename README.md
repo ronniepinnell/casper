@@ -23,7 +23,7 @@ it blocks the commit and says:
 
 **Casper** is a curated set of Claude Code skills + agents built around one
 thesis: **correction history is the asset, not the model.** Its headline act is the **judgment
-toolkit** — <!-- COUNT: judgment-skills -->15<!-- /COUNT --> skills + <!-- COUNT: hooks -->7<!-- /COUNT --> CI-tested, zero-LLM hooks that block unproven "done"
+toolkit** — <!-- COUNT: judgment-skills -->15<!-- /COUNT --> skills + <!-- COUNT: hooks -->16<!-- /COUNT --> CI-tested, zero-LLM hooks that block unproven "done"
 claims, keep an append-only verdict ledger, and score how your confidence aged.
 Around it sits a browsable **collection** of the planning, verification, and
 tooling skills we actually run in production.
@@ -42,7 +42,7 @@ directly (install.sh is the floor everything else wraps):
 git clone https://github.com/ronniepinnell/casper && cd casper
 
 ./install.sh --only refute              # one skill, into ./.claude/skills of this project
-./install.sh                            # the whole judgment toolkit (13 skills)
+./install.sh                            # the whole judgment toolkit (15 skills)
 ./install.sh --all                      # toolkit + the entire collection (skills + agents)
 ```
 
@@ -160,10 +160,12 @@ The flagship. <!-- COUNT: judgment-skills -->15<!-- /COUNT --> skills that turn 
 | `/precedent` | Grep prior rulings: FOLLOW or explicitly DISTINGUISH |
 | `/sweep` | Massive audit fan-out → adversarial verification → graded synthesis |
 | `/judgment` | The map + router: given a situation, names the one tool that fits |
+| `/merge-train` | Merge only mechanically-proven-safe PRs; every held PR names its missing fact |
+| `/audit-skills` | Measure your skill library (tokens, bloat, overlap); UNVERIFIED over guessed |
 
 **Start here — 5 tools:** `/refute`, `/gate`, `/verdict`, `/door`, `/calibrate`.
 
-Backed by <!-- COUNT: hooks -->7<!-- /COUNT --> zero-LLM hooks (claim-evidence, spec-citation, scope-creep,
+Backed by <!-- COUNT: hooks -->16<!-- /COUNT --> zero-LLM hooks (claim-evidence, spec-citation, scope-creep,
 dangerous-git, and three telemetry/guard hooks), each with a block-case AND
 pass-case regression test — <!-- COUNT: hook-tests -->24<!-- /COUNT --> assertions, run in CI (`hooks/judgment/test.sh`).
 Every skill appends a one-line, grep-able verdict to `.claude/verdicts.log`:

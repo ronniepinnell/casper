@@ -15,7 +15,7 @@
       "resolves"
     ],
     "test_pattern": "(^|/)(tests?|__tests__|spec)/|\\.(test|spec)\\.|_test\\.",
-    "voice": "casper"
+    "voice": "plain"
   },
   "spec_citation": {
     "enabled": true,
@@ -34,6 +34,18 @@
     "max_files": 15,
     "reset_seconds": 28800
   },
+  "precedent_inject": {
+    "enabled": false,
+    "max_lines": 10
+  },
+  "commit_provenance": {
+    "enabled": false
+  },
+  "commit_style": {
+    "enabled": false,
+    "style": "conventional",
+    "extra_pattern": ""
+  },
   "telemetry": {
     "enabled": false,
     "log_file": ".claude/.judgment-state/skill-usage.jsonl"
@@ -47,6 +59,16 @@
         "develop"
       ],
       "extra_patterns": []
+    },
+    "untracked_config": {
+      "enabled": false,
+      "files": [
+        ".claude/project.yml"
+      ]
+    },
+    "clean_gone": {
+      "enabled": false,
+      "auto_delete": false
     },
     "context_watchdog": {
       "enabled": false,
