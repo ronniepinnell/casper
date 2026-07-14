@@ -1,0 +1,16 @@
+name: refute
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  refute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: ronniepinnell/refute-action@v1
+        with:
+          helpful: true
