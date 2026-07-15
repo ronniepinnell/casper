@@ -3,7 +3,7 @@ name: backfill
 origin: authored
 description: Retroactively grade merged PRs against the claim-evidence discipline — which done-claims shipped with evidence, which shipped unproven. Zero-LLM (gh CLI); optionally seeds the verdicts ledger with UNVERIFIED BACKFILL rows. Use when adopting the toolkit on a repo with history, before trusting old "done"s, or to measure how the discipline is trending.
 allowed-tools: Bash, Read, Grep
-argument-hint: "[--repo owner/name] [--limit 100] [--ledger .claude/verdicts.log]"
+argument-hint: "[--repo owner/name] [--since YYYY-MM-DD] [--limit 100] [--ledger .claude/verdicts.log]"
 ---
 
 # /backfill — Grade the Dones You Already Shipped
@@ -16,12 +16,15 @@ every merged PR is graded EVIDENCED / UNEVIDENCED / NO-CLAIM, mechanically.
 
 ```
 /backfill                                  # last 100 merged PRs, current repo
-/backfill --limit 300 --ledger .claude/verdicts.log
+/backfill --since 2026-01-01 --ledger .claude/verdicts.log   # window, not the whole history
+/backfill --limit 300                                            # hard cap either way
 ```
 
 ## Procedure
 
-1. Run `python3 <toolkit>/scripts/backfill.py [--repo …] [--limit N]`
+1. Run `python3 <toolkit>/scripts/backfill.py [--repo …] [--since DATE] [--limit N]`
+   — on a repo with thousands of PRs, ALWAYS pass `--since` (server-side
+   filter); grade a window and widen only if the baseline needs it.
    (same claim words and evidence paths as the claim-evidence hook: an
    `Evidence:` line in the body, or test files in the diff).
 2. Read the UNEVIDENCED list — those are the PRs whose "done" was asserted,

@@ -13,7 +13,11 @@ BACKFILL rows for the verdicts ledger — every retro row is UNVERIFIED
 (history can be graded, not re-run; never silently upgrade).
 
 Usage:
-  python3 scripts/backfill.py [--repo owner/name] [--limit 100] [--ledger .claude/verdicts.log]
+  python3 scripts/backfill.py [--repo owner/name] [--since 2026-01-01] [--limit 100] [--ledger .claude/verdicts.log]
+
+--since filters SERVER-side (gh search `merged:>=DATE`), so grading a huge
+repo's recent window never pages thousands of old PRs; --limit stays as the
+hard cap either way.
 
 Exit 0 always: history is a report, not a gate. The gate is what you install
 so the NEXT hundred PRs grade better.
@@ -44,13 +48,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo", default=None, help="owner/name (default: current)")
     ap.add_argument("--limit", type=int, default=100)
+    ap.add_argument("--since", default=None,
+                    help="only PRs merged on/after this date (YYYY-MM-DD); server-side filter")
     ap.add_argument("--ledger", default=None,
                     help="append BACKFILL rows to this verdicts ledger")
     a = ap.parse_args()
 
-    prs = json.loads(gh(["pr", "list", "--state", "merged",
-                         "--limit", str(a.limit), "--json",
-                         "number,title,body,mergedAt,files"], a.repo))
+    args = ["pr", "list", "--state", "merged", "--limit", str(a.limit),
+            "--json", "number,title,body,mergedAt,files"]
+    if a.since:
+        args += ["--search", f"merged:>={a.since}"]
+    prs = json.loads(gh(args, a.repo))
     rows, claims, evidenced = [], 0, 0
     for pr in prs:
         text = (pr.get("title") or "") + "\n" + (pr.get("body") or "")
