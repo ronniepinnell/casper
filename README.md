@@ -78,7 +78,7 @@ npx casper@latest --init     # detects your stack, writes a tuned .claude/judgme
 casper doctor                # verify: judgment.json valid? hooks wired? ledger writable? which gates on?
 ```
 
-<img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/casper-init.gif" width="820" alt="npx casper --init detects your stack, writes judgment.json, wires the hooks; casper doctor reports healthy">
+<img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/casper-init.gif" width="820" alt="casper --init writes judgment.json, live-blocks a fake done-claim, then ends with the mirror: your repo's own merged PRs graded EVIDENCED/UNEVIDENCED">
 
 That's it — from now on an evidence-free `git commit -m "fix: done"` is blocked
 **in your repo**, and every verdict lands in `.claude/verdicts.log`. `--init`
@@ -176,6 +176,8 @@ python3 scripts/backfill.py --badge badge.json          # shields endpoint: "evi
 ```
 Publish `badge.json` (gh-pages/gist) and embed
 `https://img.shields.io/endpoint?url=<public-url>` — the score keeps you honest in public.
+
+![backfill grades a repo's merged PRs EVIDENCED/UNEVIDENCED and writes the badge JSON — this repo scored 50%](https://github.com/ronniepinnell/casper/releases/download/v0.1.0/backfill.gif)
 
 **The wider suite** (refute-action, ledger MCP, badge, report): [docs/SUITE.md](docs/SUITE.md).
 

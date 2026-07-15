@@ -145,7 +145,7 @@ echo
 if command -v gh >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1 \
    && gh repo view >/dev/null 2>&1; then
   echo "== your history, graded (last 50 merged PRs — the gates protect the NEXT ones)"
-  python3 "$SRC/scripts/backfill.py" --limit 50 2>/dev/null | tail -3 || true
+  python3 "$SRC/scripts/backfill.py" --limit 50 2>/dev/null | tail -8 || true
   echo
 fi
 
