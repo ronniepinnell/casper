@@ -54,8 +54,23 @@ if not re.search(r"\b(" + "|".join(map(re.escape, claim_words)) + r")\b",
     sys.exit(0)
 
 # Evidence path 1: explicit Evidence: line with content.
-if re.search(r"\bEvidence:\s*\S+", message, re.I):
-    sys.exit(0)
+m_ev = re.search(r"\bEvidence:\s*(\S[^\n]*)", message, re.I)
+if m_ev:
+    if not gate.get("strict", False):
+        sys.exit(0)
+    # strict mode: "Evidence: trust me" doesn't count. The line must name a
+    # recognized runner/command (heuristic, configurable via strict_runners)
+    # AND carry a result marker (->, =, "passed", exit code, count).
+    runners = gate.get("strict_runners",
+        ["pytest", "npm", "npx", "node", "vitest", "jest", "go ", "make",
+         "cargo", "python", "python3", "bash", "sh ", "curl", "gh ", "git ",
+         "mvn", "gradle", "rspec", "phpunit", "dotnet", "bun", "deno"])
+    ev = m_ev.group(1)
+    has_runner = any(r in ev for r in runners)
+    has_result = bool(re.search(r"(->|→|=|\bpass(ed)?\b|\bexit\s*0\b|\bok\b|\bgreen\b|\d)", ev, re.I))
+    if has_runner and has_result:
+        sys.exit(0)
+    # fall through: strict evidence not met — test-file path may still save it
 
 # Evidence path 2: staged diff touches test files.
 test_pat = re.compile(gate.get(

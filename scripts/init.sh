@@ -141,6 +141,14 @@ else
   echo "   NOTE: demo did not block (exit $DEMO_EXIT) — is claim_evidence.enabled true in $CONFIG?"
 fi
 echo
+# ---- 5. the mirror: grade the dones this repo ALREADY shipped ---------------
+if command -v gh >/dev/null 2>&1 && git rev-parse --git-dir >/dev/null 2>&1 \
+   && gh repo view >/dev/null 2>&1; then
+  echo "== your history, graded (last 50 merged PRs — the gates protect the NEXT ones)"
+  python3 "$SRC/scripts/backfill.py" --limit 50 2>/dev/null | tail -3 || true
+  echo
+fi
+
 echo "Done. Next steps:"
 echo "  1. Wire the hooks into .claude/settings.json (each script's header shows the snippet)."
 echo "  2. Commit $CONFIG so the whole team gets the same gates."

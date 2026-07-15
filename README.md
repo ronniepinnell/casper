@@ -2,6 +2,11 @@
 
 > **Your AI ghosted you with a "done." Casper caught it.**
 >
+> CodeRabbit reviews your code. **Casper reviews your claims** — every "done"
+> needs evidence, every ruling lands in an append-only ledger, and the
+> roadmap's liveness check asks the question no code reviewer can: *is it
+> actually live?*
+>
 > _The friendly ghost in your git — it keeps the receipts._
 
 <p align="center"><img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/casper-ghost.gif" width="130" alt="Casper, the friendly ghost"></p>
@@ -163,6 +168,16 @@ The flagship. <!-- COUNT: judgment-skills -->16<!-- /COUNT --> skills that turn 
 | `/merge-train` | Merge only mechanically-proven-safe PRs; every held PR names its missing fact |
 | `/audit-skills` | Measure your skill library (tokens, bloat, overlap); UNVERIFIED over guessed |
 | `/backfill` | Retro-grade merged PRs: which done-claims shipped with evidence, which shipped unproven |
+
+**First 60 seconds — grade the dones you already shipped:**
+```bash
+python3 scripts/backfill.py --since 2026-01-01          # EVIDENCED / UNEVIDENCED per PR
+python3 scripts/backfill.py --badge badge.json          # shields endpoint: "evidenced dones: 87%"
+```
+Publish `badge.json` (gh-pages/gist) and embed
+`https://img.shields.io/endpoint?url=<public-url>` — the score keeps you honest in public.
+
+**The wider suite** (refute-action, ledger MCP, badge, report): [docs/SUITE.md](docs/SUITE.md).
 
 **Start here — 5 tools:** `/refute`, `/gate`, `/verdict`, `/door`, `/calibrate`.
 

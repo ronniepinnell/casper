@@ -49,8 +49,12 @@ done
 
 MANIFEST="$TARGET_ROOT/.${TOOLKIT_NAME}-manifest"
 if [ -f "$MANIFEST" ] && [ "$DRY_RUN" -eq 0 ]; then
-  echo "ERROR: $MANIFEST exists — already installed. Run ./uninstall.sh first." >&2
-  exit 1
+  # Additive re-run (e.g. base install first, --hooks later — the normal
+  # adoption path). Existing files are never overwritten anyway; new writes
+  # append to the same manifest so ONE ./uninstall.sh still reverts all.
+  # (Cold-clone refute 2026-07-15: the old hard abort forced a full
+  # uninstall just to add hooks.)
+  echo "note: existing install detected — running additively; new files append to the manifest."
 fi
 
 # --- unit resolution -------------------------------------------------------
@@ -156,11 +160,12 @@ if [ "$DRY_RUN" -eq 1 ]; then
   exit 0
 fi
 
+# Append on re-run so ONE uninstall reverts every batch; write header once.
+[ -f "$MANIFEST" ] || echo "# $TOOLKIT_NAME manifest — consumed by uninstall.sh; do not edit" > "$MANIFEST"
 {
-  echo "# $TOOLKIT_NAME manifest — consumed by uninstall.sh; do not edit"
   for f in ${CREATED_FILES[@]+"${CREATED_FILES[@]}"}; do echo "F $f"; done
   for d in ${CREATED_DIRS[@]+"${CREATED_DIRS[@]}"}; do echo "D $d"; done
-} > "$MANIFEST"
+} >> "$MANIFEST"
 
 echo "installed ${#SKILL_NAMES[@]} skill(s) + ${#AGENT_NAMES[@]} agent(s). Manifest: $MANIFEST"
 echo "Uninstall any time: ./uninstall.sh (from the same directory you installed from)"

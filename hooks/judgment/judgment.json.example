@@ -15,7 +15,8 @@
       "resolves"
     ],
     "test_pattern": "(^|/)(tests?|__tests__|spec)/|\\.(test|spec)\\.|_test\\.",
-    "voice": "plain"
+    "voice": "plain",
+    "strict": false
   },
   "spec_citation": {
     "enabled": true,

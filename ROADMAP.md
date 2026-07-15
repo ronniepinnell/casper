@@ -5,6 +5,15 @@
   install/uninstall with manifest, CI (hook matrix + skill lint).
 
 ## v0.2 — Distribution surfaces
+- **Suggested fixes, casper-flavored (PR comments).** CodeRabbit suggests code
+  changes; casper suggests the two things a claims-reviewer can: (1) the
+  EVIDENCE to produce — "this done-claim needs `pytest tests/x -k y` output
+  pasted as an Evidence: line" — and (2) the PINNING TEST — /refute step 6's
+  regression stub, filed as a ready-to-commit suggestion block. Delivery:
+  refute-action already posts PR checks/comments on GitHub; the comment
+  surface goes behind the review-bot adapter so GitLab/Gitea land later
+  (agnostic core, forge-specific last mile). Casper never comments on style
+  or structure — that lane is taken; claims and evidence are ours.
 - **Liveness check (the layer rule, mechanized).** "Merged" is the code
   layer; "done" claims the user layer. A companion check for refute-action
   that, given a done-claim, verifies the claim's LAYER: commit is an ancestor

@@ -50,6 +50,8 @@ def main():
     ap.add_argument("--limit", type=int, default=100)
     ap.add_argument("--since", default=None,
                     help="only PRs merged on/after this date (YYYY-MM-DD); server-side filter")
+    ap.add_argument("--badge", default=None,
+                    help="write a shields.io endpoint JSON with the evidenced-dones score")
     ap.add_argument("--ledger", default=None,
                     help="append BACKFILL rows to this verdicts ledger")
     a = ap.parse_args()
@@ -87,6 +89,15 @@ def main():
                f"{claims} done-claims | {evidenced} evidenced ({pct}%) | "
                f"{claims - evidenced} shipped unproven")
     print("\n" + summary)
+
+    if a.badge:
+        color = ("brightgreen" if pct >= 90 else "green" if pct >= 75
+                 else "yellow" if pct >= 50 else "red")
+        with open(a.badge, "w", encoding="utf-8") as f:
+            json.dump({"schemaVersion": 1, "label": "evidenced dones",
+                       "message": f"{pct}% of {claims}", "color": color}, f)
+        print(f"badge endpoint written to {a.badge} — serve it and embed:")
+        print("  https://img.shields.io/endpoint?url=<public-url-to-that-json>")
 
     if a.ledger:
         today = datetime.date.today().isoformat()
