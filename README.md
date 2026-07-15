@@ -7,7 +7,7 @@
 <p align="center"><img src="https://github.com/ronniepinnell/casper/releases/download/v0.1.0/casper-ghost.gif" width="130" alt="Casper, the friendly ghost"></p>
 
 <!-- BADGES: numbers gated by scripts/check-counts.py (badge URLs can't hold COUNT markers — HTML comments break the link) -->
-[![CI](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml/badge.svg)](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml) [![hook tests](https://img.shields.io/badge/hook__tests-24%2F24-brightgreen)](#the-judgment-toolkit) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![judgment skills](https://img.shields.io/badge/judgment__skills-15-blueviolet)](#the-judgment-toolkit) [![collection](https://img.shields.io/badge/collection-54__units_=_41__skills_+_13__agents-9cf)](#the-full-collection) [![release](https://img.shields.io/badge/release-v0.1.0-lightgrey)](#)
+[![CI](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml/badge.svg)](https://github.com/ronniepinnell/casper/actions/workflows/ci.yml) [![hook tests](https://img.shields.io/badge/hook__tests-24%2F24-brightgreen)](#the-judgment-toolkit) [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![judgment skills](https://img.shields.io/badge/judgment__skills-16-blueviolet)](#the-judgment-toolkit) [![collection](https://img.shields.io/badge/collection-54__units_=_41__skills_+_13__agents-9cf)](#the-full-collection) [![release](https://img.shields.io/badge/release-v0.1.0-lightgrey)](#)
 
 ![Casper in action: an AI's "done" gets blocked, the verdict lands in the ledger, and calibration scores how often your agent's "done" actually held up — 1 in 4 here.](https://github.com/ronniepinnell/casper/releases/download/v0.1.0/casper-showcase.gif)
 
@@ -23,7 +23,7 @@ it blocks the commit and says:
 
 **Casper** is a curated set of Claude Code skills + agents built around one
 thesis: **correction history is the asset, not the model.** Its headline act is the **judgment
-toolkit** — <!-- COUNT: judgment-skills -->15<!-- /COUNT --> skills + <!-- COUNT: hooks -->16<!-- /COUNT --> CI-tested, zero-LLM hooks that block unproven "done"
+toolkit** — <!-- COUNT: judgment-skills -->16<!-- /COUNT --> skills + <!-- COUNT: hooks -->16<!-- /COUNT --> CI-tested, zero-LLM hooks that block unproven "done"
 claims, keep an append-only verdict ledger, and score how your confidence aged.
 Around it sits a browsable **collection** of the planning, verification, and
 tooling skills we actually run in production.
@@ -42,7 +42,7 @@ directly (install.sh is the floor everything else wraps):
 git clone https://github.com/ronniepinnell/casper && cd casper
 
 ./install.sh --only refute              # one skill, into ./.claude/skills of this project
-./install.sh                            # the whole judgment toolkit (15 skills)
+./install.sh                            # the whole judgment toolkit (16 skills)
 ./install.sh --all                      # toolkit + the entire collection (skills + agents)
 ```
 
@@ -143,7 +143,7 @@ _procedure any model runs._
 
 ## The judgment toolkit
 
-The flagship. <!-- COUNT: judgment-skills -->15<!-- /COUNT --> skills that turn "trust me, it's done" into a checkable record.
+The flagship. <!-- COUNT: judgment-skills -->16<!-- /COUNT --> skills that turn "trust me, it's done" into a checkable record.
 
 | Command | One-liner |
 |---|---|
@@ -162,6 +162,7 @@ The flagship. <!-- COUNT: judgment-skills -->15<!-- /COUNT --> skills that turn 
 | `/judgment` | The map + router: given a situation, names the one tool that fits |
 | `/merge-train` | Merge only mechanically-proven-safe PRs; every held PR names its missing fact |
 | `/audit-skills` | Measure your skill library (tokens, bloat, overlap); UNVERIFIED over guessed |
+| `/backfill` | Retro-grade merged PRs: which done-claims shipped with evidence, which shipped unproven |
 
 **Start here — 5 tools:** `/refute`, `/gate`, `/verdict`, `/door`, `/calibrate`.
 

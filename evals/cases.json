@@ -211,6 +211,26 @@
    "canonical_ledger_line": "2026-07-14 | AUDIT | skills 20 in scope | 82883->79219 tok | tightened: biggest-skill | UNVERIFIED: usage axes | by: claude",
    "canonical_verdict_line": "AUDIT: skills | 20 in scope | 82883->79219 tok | tightened: biggest-skill | UNVERIFIED: usage axes",
    "verdict_regex": "^AUDIT: skills"
+  },
+  {
+   "skill": "backfill",
+   "situation": "Toolkit adopted on a repo with history; grade old merged PRs' done-claims.",
+   "ledger_type": "BACKFILL",
+   "ledger_known": false,
+   "allowed_tokens": [
+    "UNVERIFIED",
+    "evidenced"
+   ],
+   "doc_markers": [
+    "EVIDENCED",
+    "UNEVIDENCED",
+    "NO-CLAIM",
+    "UNVERIFIED",
+    "BACKFILL:"
+   ],
+   "canonical_ledger_line": "2026-07-15 | BACKFILL | UNVERIFIED | 100 merged PRs, 40 done-claims, 28 evidenced (70%) | retro grade | by: casper-backfill",
+   "canonical_verdict_line": "BACKFILL: repo | 100 merged PRs | 40 done-claims | 28 evidenced (70%) | 12 shipped unproven",
+   "verdict_regex": "^BACKFILL: "
   }
  ]
 }
