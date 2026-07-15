@@ -5,6 +5,16 @@
   install/uninstall with manifest, CI (hook matrix + skill lint).
 
 ## v0.2 — Distribution surfaces
+- **Liveness check (the layer rule, mechanized).** "Merged" is the code
+  layer; "done" claims the user layer. A companion check for refute-action
+  that, given a done-claim, verifies the claim's LAYER: commit is an ancestor
+  of the release branch, contained in the deployed SHA (pluggable endpoint),
+  and any migrations in the diff are applied (pluggable command). Each check
+  reports a named diff or UNVERIFIED — never assumed live. Event-driven (runs
+  when the claim is made, PR/release-time), not a cron: casper reviews claims
+  like CodeRabbit reviews code — at the moment they're asserted. Origin:
+  2026-07-15 operator finding — three deployment-lag gaps manufacturing
+  false-dones that commit-level evidence structurally cannot catch.
 - **`/refute` GitHub Action (flagship next).** Local hooks are bypassable —
   "I'll just commit from another terminal." The Action moves enforcement to
   the trust boundary: it reads a PR's done-claims, runs the stated evidence

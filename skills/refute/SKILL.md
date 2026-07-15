@@ -47,6 +47,12 @@ into a forced procedure. Repo-agnostic: works on any project, any language.
 ## Rules
 
 - Default posture: the claim is false until step 3 fails to break it.
+- **The layer rule (done-claims).** Refute a done-claim at the layer where it
+  is EXPERIENCED, not where it was produced. "Merged" proves the code layer;
+  "done" asserts the user layer — unpromoted branches, undeployed builds, and
+  unapplied migrations all manufacture false-dones that commit-level evidence
+  can't catch. Without observing the live artifact, the honest verdict is
+  `CONFIRMED (code layer) / UNVERIFIED (live)` — name both layers.
 - One refutation run beats ten paragraphs of reasoning about why it's probably fine.
 - If step 2 produces a refutation you can't afford to run (e.g. prod-only), that is
   a finding: name the coverage gap in the verdict.
