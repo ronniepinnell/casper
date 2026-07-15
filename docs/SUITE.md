@@ -29,3 +29,8 @@ report          → the monthly trend; gates without kills get deleted
   posted as PR suggestions (claims lane only — code review is CodeRabbit's).
 - **A hosted team layer** (ledger aggregation, org calibration, precedent
   packs) is in development — watch this repo.
+- **Orchestrated execution.** Every casper discipline (evidence, the layer
+  rule, retry limits, escalation, precedent) is designed to run INSIDE
+  multi-agent orchestration — parallel worker teams executing under these
+  gates. The free toolkit teaches the discipline; the hosted layer runs it
+  for you.
