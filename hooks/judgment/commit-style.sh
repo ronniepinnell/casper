@@ -52,6 +52,10 @@ if not re.match(pattern, subject):
     print(f"BLOCKED by commit-style gate: subject line does not match this "
           f"repo's declared style ({style}).\n  subject: {subject!r}\n"
           f"  expected {hint}", file=sys.stderr)
+    import os as _os, datetime as _dt
+    _os.makedirs('.claude/.judgment-state', exist_ok=True)
+    open('.claude/.judgment-state/gate-events.log','a').write(
+        _dt.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ') + ' gate=commit-style event=block\n')
     sys.exit(2)
 sys.exit(0)
 PY

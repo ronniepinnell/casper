@@ -46,6 +46,10 @@ if untracked:
           "\ngit add them (they are part of the repo's conventions) or, if "
           "one is intentionally local-only, add it to .gitignore so this "
           "guard stops seeing it.", file=sys.stderr)
+    import os as _os, datetime as _dt
+    _os.makedirs('.claude/.judgment-state', exist_ok=True)
+    open('.claude/.judgment-state/gate-events.log','a').write(
+        _dt.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ') + ' gate=untracked-config event=block\n')
     sys.exit(2)
 sys.exit(0)
 PY

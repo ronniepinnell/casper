@@ -79,6 +79,10 @@ for sub in re.split(r"&&|;|\||\n", command):
                   f"manually, or relax guards.dangerous_git in "
                   f".claude/judgment.json (that edit IS the audit trail).",
                   file=sys.stderr)
+            import os as _os, datetime as _dt
+            _os.makedirs('.claude/.judgment-state', exist_ok=True)
+            open('.claude/.judgment-state/gate-events.log','a').write(
+                _dt.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ') + ' gate=dangerous-git event=block\n')
             sys.exit(2)
 sys.exit(0)
 PY

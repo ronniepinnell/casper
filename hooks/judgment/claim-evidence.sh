@@ -113,5 +113,9 @@ print(banner +
       "(run /refute to produce it), or\n"
       "  2. Staged test changes covering the claim.\n"
       "Or drop the completion claim from the message.", file=sys.stderr)
+import os as _os, datetime as _dt
+_os.makedirs('.claude/.judgment-state', exist_ok=True)
+open('.claude/.judgment-state/gate-events.log','a').write(
+    _dt.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ') + ' gate=claim-evidence event=block\n')
 sys.exit(2)
 PY
