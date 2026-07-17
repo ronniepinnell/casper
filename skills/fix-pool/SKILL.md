@@ -40,7 +40,13 @@ Each cycle:
 
 1. **Poll** — adapter: issues created since `last_poll_iso` in the configured
    team/project (include tester-session-filed and manually-filed; exclude issues
-   this session created itself unless labeled for the pool).
+   this session created itself unless labeled for the pool). **Self-filter is
+   mandatory in the poll query or first triage step** — the hub files tickets
+   too, and without it the pool re-triages its own output (observed live,
+   2026-07-17). Track hub-created ids in the state file and drop them on sight.
+   Also drop issues whose domain an ACTIVE sibling workstream owns (e.g. a
+   migration terminal's own ledger ticket) — that's a HOLD with a named owner,
+   not a dispatch.
 2. **Triage each new issue** (read title+body, check `seen_ids`):
 
    | Verdict | Criteria | Action |
