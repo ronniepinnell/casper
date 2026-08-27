@@ -17,7 +17,8 @@ judgment was banked here once.
 ## The five facts (all must hold)
 
 1. **CI green** — every status check concluded SUCCESS/NEUTRAL/SKIPPED.
-2. **Approved** — review decision is APPROVED.
+2. **Approved** — review decision is APPROVED, or an evidence-backed
+   `adversarial-review:passed` label (step 2b).
 3. **Mergeable** — no conflicts with the target branch.
 4. **Autonomy label** — the PR carries `autonomy:green`, applied by a human.
    The label IS the standing approval; the model executing this skill never
@@ -39,6 +40,20 @@ judgment was banked here once.
    **No forge access → every PR is UNVERIFIED**, reported as such — never
    assumed safe.
 2. Classify each PR SAFE or HELD; a HELD PR lists every missing fact.
+2b. **Adversarial review — the review a bot can't do.** Read the diff trying
+   to find a reason it must NOT merge, framing it as an external
+   contributor's. Findings carry file:line evidence; post them, or
+   "adversarial pass: no blocking findings — checked <dimensions>", as a PR
+   comment. Run it on any substantive PR (behaviour-changing; docs, lockfile
+   bumps, generated files and pure formatting are exempt) — measured at ~15%
+   overhead for two fabrications CI structurally could not see.
+   - It does **not** replace fact 2. A PR whose review bot silently never ran
+     may substitute the label `adversarial-review:passed`, and that label
+     counts ONLY when a comment backs it — `merge_train.py` holds a labelled
+     PR that has no evidence comment. The one route to SAFE without a real
+     approval is the one route that must not be self-asserting.
+   - Blocking findings → fix first. The label is never applied over open
+     findings.
 3. On `--execute`: merge the SAFE set in base-first order (PRs targeting the
    default branch before stacked PRs). A merge failure stops the train.
 4. Verify after: target-branch CI still green.

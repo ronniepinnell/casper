@@ -4,7 +4,9 @@
 The judgment is banked here once; any model (or cron) executes it. A PR is
 SAFE to merge unattended only if ALL of:
   1. CI green            — every status check SUCCESS/NEUTRAL/SKIPPED
-  2. approved            — reviewDecision == APPROVED
+  2. approved            — reviewDecision == APPROVED, or an
+                           `adversarial-review:passed` label BACKED by
+                           its evidence comment (never self-asserting)
   3. mergeable           — no conflicts
   4. autonomy label      — carries `autonomy:green` (the Operator's standing
                            pre-approval; absence means "wait for a human")
@@ -35,6 +37,25 @@ def gh(args):
     return r.stdout
 
 
+# A review bot that silently never runs would hang a PR forever, so a human
+# may substitute an adversarial review: read the diff trying to find a reason
+# it must NOT merge, then post the findings. `adversarial-review:passed` records
+# that. It is the ONLY route to SAFE without a real approval, so it may never be
+# self-asserting — the label counts only when a comment backs it.
+EVIDENCE_FILE_LINE = re.compile(r"[\w./-]+\.[A-Za-z0-9]+:\d+")
+EVIDENCE_NO_FINDINGS = re.compile(r"no blocking findings", re.I)
+
+
+def has_adversarial_evidence(comments):
+    for c in comments or []:
+        body = c.get("body") or ""
+        if "adversarial" not in body.lower():
+            continue
+        if EVIDENCE_FILE_LINE.search(body) or EVIDENCE_NO_FINDINGS.search(body):
+            return True
+    return False
+
+
 def classify(pr, target):
     reasons = []
     checks = pr.get("statusCheckRollup") or []
@@ -47,8 +68,13 @@ def classify(pr, target):
                                  for c in bad[:3]))
     if not checks:
         reasons.append("no-ci-checks")
+    labels_pre = {l["name"] for l in pr.get("labels", [])}
     if pr.get("reviewDecision") != "APPROVED":
-        reasons.append(f"not-approved ({pr.get('reviewDecision') or 'none'})")
+        if "adversarial-review:passed" not in labels_pre:
+            reasons.append(f"not-approved ({pr.get('reviewDecision') or 'none'})")
+        elif not has_adversarial_evidence(pr.get("comments")):
+            reasons.append("adversarial-review:passed carries no evidence comment "
+                           "(need file:line findings or 'no blocking findings')")
     if pr.get("mergeable") == "CONFLICTING":
         reasons.append("merge-conflict")
     labels = {l["name"] for l in pr.get("labels", [])}
@@ -70,7 +96,8 @@ def main():
 
     prs = json.loads(gh(["pr", "list", "--state", "open", "--json",
                          "number,title,labels,reviewDecision,mergeable,"
-                         "statusCheckRollup,baseRefName,headRefName,body"]))
+                         "statusCheckRollup,baseRefName,headRefName,body,"
+                         "comments"]))
     safe, held = [], []
     for pr in prs:
         reasons = classify(pr, args.target)
