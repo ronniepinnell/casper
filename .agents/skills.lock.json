@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "generated_by": "project-init",
+  "explicit_profiles": [],
+  "profiles": [
+    "javascript"
+  ],
+  "skills": [
+    "testing-patterns"
+  ]
+}
