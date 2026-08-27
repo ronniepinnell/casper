@@ -1,0 +1,9 @@
+project:
+  owner_repo: ronniepinnell/casper
+services:
+  ci: github-actions
+stack:
+  languages:
+    - javascript
+paths:
+  roadmap_file: ROADMAP.md
